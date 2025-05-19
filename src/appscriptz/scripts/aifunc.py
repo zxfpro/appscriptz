@@ -4,9 +4,6 @@ from datetime import datetime
 from promptlibz import Templates,TemplateType
 from llmada import BianXieAdapter
 
-import re
-
-
 def generate_schedule(text: str,habit: str="") -> str:
     """
     使用 GPT 模型生成日程安排

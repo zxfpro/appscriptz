@@ -1,6 +1,5 @@
 """ 动作函数 """
 
-        
 from .scripts.applescript import Notes,Calulate,Reminder
 from .scripts.aifunc import generate_schedule
 
@@ -21,15 +20,16 @@ class APPManager():
         else:
             print("未能解析到执行池内容")
 
-    def Memorandum2Notes(self,text):
+    def memorandum2notes(self,text):
         Notes.write(text)
 
 
-    def Memorandum2Reminder(self,text):
+    def memorandum2reminder(self,text,date):
         for content in text.split("\n")[1:]:
+            print(content,'content')
             Reminder.write_reminder(content, 
                 list_name="工作",
-                due_date=f"{date_c.date} {date_c.time}",
+                due_date=date,
                 priority=2,
                 notes="")
             
