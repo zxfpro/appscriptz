@@ -232,6 +232,52 @@ class Display():
             return None
 
     @staticmethod
+    def get_multi_level_selection_simple(warehouse_list: list, action_list: list) -> str:
+        """
+        【极简版】通过调用AppleScript在macOS上显示多层级UI对话框来收集用户输入。
+        
+        此版本移除了所有错误处理。如果用户点击"取消"，脚本会失败。
+
+        :param warehouse_list: 字符串列表，用于仓库选择。
+        :param action_list: 字符串列表，用于动作类型选择。
+        :return: 格式为 "动作:仓库:标题:描述" 的字符串。
+        """
+        # 1. 将Python列表格式化为AppleScript能识别的列表字符串
+        # 例如: ['server', 'client'] -> '{"server", "client"}'
+        as_warehouse_list = '{' + ', '.join(f'"{w}"' for w in warehouse_list) + '}'
+        as_action_list = '{' + ', '.join(f'"{a}"' for a in action_list) + '}'
+
+        # 2. 构建最核心的AppleScript代码
+        # 注意：这里没有任何 'try' 或 'if' 来处理取消操作
+        applescript_code = f'''
+        -- 步骤 1: 选择仓库
+        set selectedWarehouse to item 1 of (choose from list {as_warehouse_list} with prompt "步骤 1/4: 请选择仓库")
+
+        -- 步骤 2: 选择动作类型
+        set selectedAction to item 1 of (choose from list {as_action_list} with prompt "步骤 2/4: 请选择动作类型")
+
+        -- 步骤 3: 输入标题
+        set titleText to text returned of (display dialog "步骤 3/4: 请输入标题" default answer "")
+
+        -- 步骤 4: 输入详细描述
+        set descriptionText to text returned of (display dialog "步骤 4/4: 请输入详细描述" default answer "")
+
+        -- 拼接并返回最终结果
+        return selectedAction & ":" & selectedWarehouse & ":" & titleText & ":" & descriptionText
+        '''
+
+        # 3. 执行AppleScript并捕获其标准输出
+        process = subprocess.run(
+            ["osascript", "-e", applescript_code],
+            capture_output=True,  # 捕获输出
+            text=True             # 以文本模式处理
+        )
+
+        # 4. 返回AppleScript脚本的输出结果，并去除末尾的换行符
+        return process.stdout.strip()
+
+
+    @staticmethod
     def display_dialog(title, text, buttons='"OK"',button_cancel = True):
         # # --- 示例 ---
         # buttons='"OK","vvk"'
@@ -279,3 +325,72 @@ class ShortCut():
         return run_applescript(script)
 
 
+#######
+
+
+def applescript():
+	"""
+	
+	https://sspai.com/post/46912
+
+	https://sspai.com/post/43758
+	"""
+	return """
+
+```applescript
+**use** AppleScript version "2.4" -- Yosemite (10.10) or later
+
+**use** _scripting additions_
+
+  
+
+-- 告诉 System Events 我们要和它交互
+
+**tell** _application_ "System Events"
+
+	**tell** _process_ "网易有道翻译"
+		
+		-- set frontmost to true
+		
+			**tell** _window_ "网易有道翻译"
+			
+				**tell** _scroll area_ 1 **of** _group_ 1 **of** _group_ 1 -- 滚动区 组 组
+					
+					**tell** _UI element_ 1 -- 组 HTML 内容
+						
+						entire contents -- 获取所有 UI 元素
+						
+						-- static text "hierarchy"
+					
+					**set** value **of** _group_ 7 **to** "aaa"
+				
+				**end** **tell**
+			
+			**end** **tell**
+		
+		**end** **tell**
+	
+	**end** **tell**
+
+**end** **tell**
+
+
+
+  
+
+-- 告诉 System Events 我们要和它交互
+
+tell application "System Events"
+
+	tell process "网易有道翻译"
+	
+		entire contents -- 获取所有UI
+	
+	end tell
+
+end tell
+
+-- static text "hierarchy" of group 7 of UI element 1 of scroll area 1 of group 1 of group 1 of window "网易有道翻译" of application process "网易有道翻译" of application "System Events",
+```
+
+"""
