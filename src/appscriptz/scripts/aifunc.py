@@ -1,8 +1,8 @@
 """ ai 脚本"""
 
-from datetime import datetime
-from promptlibz import Templates,TemplateType #TODO 修改
+from promptlibz.core import PromptManager,PromptRepository
 from llmada import BianXieAdapter
+from datetime import datetime
 
 def generate_schedule(text: str,habit: str="") -> str:
     """
@@ -12,7 +12,9 @@ def generate_schedule(text: str,habit: str="") -> str:
     """
     llm = BianXieAdapter()
     llm.set_model("o3-mini")
-    template = Templates(TemplateType.GENERATE_SCHEDULE)
+    repository = PromptRepository()
+    manager = PromptManager(repository)
+    template = manager.get_prompt("GenerateSchedule")
     current_utc_time = str(datetime.today())[:-7]
     prompt = template.format(text=text,habit=habit,current_utc_time = current_utc_time)
     completion = llm.product(prompt)
