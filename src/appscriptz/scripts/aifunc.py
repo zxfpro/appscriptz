@@ -1,7 +1,7 @@
 """ ai 脚本"""
 
 from datetime import datetime
-from promptlibz import Templates,TemplateType
+from promptlibz import Templates,TemplateType #TODO 修改
 from llmada import BianXieAdapter
 
 def generate_schedule(text: str,habit: str="") -> str:

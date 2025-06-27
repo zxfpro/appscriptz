@@ -1,8 +1,3 @@
-from .scripts.applescript import Notes,Calulate,Reminder
-from .scripts.aifunc import generate_schedule
-
-from .main import APPManager
-
-from querypipz.log import Log
-
+"""  主 init 中尽量不要写东西 """
+from appscriptz.log import Log
 Log.reset_level('debug')

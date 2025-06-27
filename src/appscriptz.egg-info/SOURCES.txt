@@ -1,6 +1,7 @@
 README.md
 pyproject.toml
 src/appscriptz/__init__.py
+src/appscriptz/log.py
 src/appscriptz/main.py
 src/appscriptz.egg-info/PKG-INFO
 src/appscriptz.egg-info/SOURCES.txt
