@@ -124,5 +124,5 @@ class Logger:
         self.logger = logger
 
 
-Log = Logger(log_file_name = "querypipz.log")
+Log = Logger(log_file_name = "appscriptz.log")
 del Logger

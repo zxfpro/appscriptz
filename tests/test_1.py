@@ -1,4 +1,4 @@
-from appscriptz.main import APPManager
+from appscriptz.manager import APPManager
 
 
 
