@@ -124,5 +124,5 @@ class Logger:
         self.logger = logger
 
 
-Log = Logger(log_file_name = "appscriptz.log")
+Log = Logger(log_file_name = "app.log")
 del Logger
