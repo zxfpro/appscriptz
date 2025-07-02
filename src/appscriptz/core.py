@@ -5,12 +5,18 @@ from llama_index.core import PromptTemplate
 import shlex
 from promptlibz.core import PromptManager,PromptRepository
 from llmada import BianXieAdapter
+import textwrap # Add this line
 
-def generate_schedule(text: str,habit: str="") -> str:
+def generate_schedule(text: str, habit: str = "") -> str:
     """
-    使用 GPT 模型生成日程安排
-    :param text: 输入文本
-    :return: 生成的日程安排结果
+    使用 GPT 模型生成日程安排。
+
+    Args:
+        text (str): 用于生成日程的输入文本。
+        habit (str, optional): 习惯描述，用于定制日程。默认为空字符串。
+
+    Returns:
+        str: 生成的日程安排结果。
     """
     llm = BianXieAdapter()
     llm.set_model("o3-mini")
@@ -23,14 +29,15 @@ def generate_schedule(text: str,habit: str="") -> str:
     return completion
 
 
-def run_applescript(script:str)->str:
-    """运行apple script 脚本
+def run_applescript(script: str) -> str:
+    """
+    运行 AppleScript 脚本。
 
     Args:
-        script (str): applescript 脚本
+        script (str): 要执行的 AppleScript 脚本字符串。
 
     Returns:
-        str: 脚本的输出
+        str: 脚本执行的标准输出，已去除末尾换行符。
     """
     result = subprocess.run(['osascript', '-e', script],capture_output=True,check=False)
     return result.stdout.decode().replace('\n','')
@@ -39,7 +46,16 @@ def run_applescript(script:str)->str:
 class Notes():
 
     @staticmethod
-    def write(content):
+    def write(content: str) -> str:
+        """
+        将内容写入 macOS 备忘录应用。
+
+        Args:
+            content (str): 要写入备忘录的内容。
+
+        Returns:
+            str: AppleScript 执行结果。
+        """
         content = content.replace("\n",",").replace('- [ ]','')
         # 构造 AppleScript 脚本  TODO 解决无法换行问题
         script = f'''
@@ -60,12 +76,25 @@ class Notes():
 class Reminder():
 
     @staticmethod
-    def write_reminder(content, 
-                        list_name="Reminders",  # 指定列表名称
-                        due_date=None,         # 设置到期日
-                        priority=None,         # 设置优先级(1-4)
-                        notes=""               # 添加备注
-                    ):
+    def write_reminder(self,
+                       content: str,
+                       list_name: str = "Reminders",
+                       due_date: str = None,
+                       priority: int = None,
+                       notes: str = "") -> str:
+        """
+        在 macOS 提醒事项应用中创建新的提醒。
+
+        Args:
+            content (str): 提醒事项的主要内容。
+            list_name (str, optional): 提醒事项所属的列表名称。默认为 "Reminders"。
+            due_date (str, optional): 提醒事项的到期日期，格式为 "YYYY年MM月DD日HH:MM"。默认为 None。
+            priority (int, optional): 提醒事项的优先级 (1-4)。1 为最高优先级，4 为最低优先级。默认为 None。
+            notes (str, optional): 提醒事项的备注信息。默认为空字符串。
+
+        Returns:
+            str: AppleScript 执行结果。
+        """
         # 预处理内容
         processed_content = content.replace('\n', ' ').replace('- [ ]', '').strip()
         processed_content = processed_content.replace('"', '\\"')
@@ -85,13 +114,6 @@ class Reminder():
         tell application "Reminders"
             activate
             set targetList to list "{list_name}"
-            make new reminder in targetList with properties {{{', '.join(properties)}}}
-        end tell
-        '''
-        script = f'''
-        tell application "Reminders"
-            activate
-            set targetList to default list
             set newReminder to make new reminder in targetList with properties {{{', '.join(properties)}}}
             show newReminder
         end tell
@@ -100,9 +122,23 @@ class Reminder():
 
 class Calulate():
     @staticmethod
-    def update(start_date:str = "2025年4月25日8:00",
-                end_date:str = "2025年4月25日9:00",
-                event_name:str = "会议"):
+    def update(self,
+               start_date: str = "2025年4月25日8:00",
+               end_date: str = "2025年4月25日9:00",
+               event_name: str = "会议") -> str:
+        """
+        在 macOS 日历应用中创建或更新一个事件。
+
+        Args:
+            start_date (str, optional): 事件的开始日期和时间，格式为 "YYYY年MM月DD日HH:MM"。
+                                        默认为 "2025年4月25日8:00"。
+            end_date (str, optional): 事件的结束日期和时间，格式为 "YYYY年MM月DD日HH:MM"。
+                                      默认为 "2025年4月25日9:00"。
+            event_name (str, optional): 事件的名称或标题。默认为 "会议"。
+
+        Returns:
+            str: AppleScript 执行结果。
+        """
         script = PromptTemplate(template='''
         tell application "Calendar"
             activate
@@ -123,7 +159,16 @@ class Calulate():
         return run_applescript(script)
 
     @staticmethod
-    def delete(event_name:str):
+    def delete(self, event_name: str) -> str:
+        """
+        从 macOS 日历应用中删除指定名称的事件。
+
+        Args:
+            event_name (str): 要删除的事件的名称。
+
+        Returns:
+            str: AppleScript 执行结果。
+        """
         script = PromptTemplate(template='''
         tell application "Calendar"
             -- 设置你要删除的日程名称
@@ -160,19 +205,22 @@ class Calulate():
 
 class Display():
     @staticmethod
-    def multiple_selection_boxes(prompt_text="请从下面的列表中选择一项：", list_title="请选择", options:list[str]=None, default_option:str=None):
+    def multiple_selection_boxes(self,
+                                 prompt_text: str = "请从下面的列表中选择一项：",
+                                 list_title: str = "请选择",
+                                 options: list[str] = None,
+                                 default_option: str = None) -> str | None:
         """
-        使用 AppleScript 显示一个列表选择框，并返回用户的选择。
+        使用 AppleScript 在 macOS 上显示一个列表选择框，并返回用户的选择。
 
         Args:
-            prompt_text (str): 显示在列表上方的提示信息。
-            list_title (str): 选择框窗口的标题。
-            options (list): 供用户选择的字符串列表。
-            default_option (str): 默认选中的项目。
+            prompt_text (str, optional): 显示在列表上方的提示信息。默认为 "请从下面的列表中选择一项："。
+            list_title (str, optional): 选择框窗口的标题。默认为 "请选择"。
+            options (list[str], optional): 供用户选择的字符串列表。如果为 None，则使用默认选项。
+            default_option (str, optional): 默认选中的项目。如果提供，该项目必须存在于 options 列表中。
 
         Returns:
-            str: 用户选择的项目。
-            None: 如果用户取消或发生错误。
+            str | None: 用户选择的项目字符串。如果用户取消选择或发生错误，则返回 None。
         """
         import sys
         if sys.platform != 'darwin':
@@ -186,21 +234,13 @@ class Display():
         applescript_list = '{' + ', '.join([f'"{item}"' for item in options]) + '}'
 
         # 构建 AppleScript
-        script = f'''
+        script_template = """
         try
             set myList to {applescript_list}
             set thePrompt to "{prompt_text}"
             set theTitle to "{list_title}"
-            '''
-
-        # 添加默认项（如果提供且有效）
-        if default_option and default_option in options:
-            script += f'set defaultChoice to {{"{default_option}"}}\n'
-            script += f'set theChoice to choose from list myList with title theTitle with prompt thePrompt default items defaultChoice'
-        else:
-            script += f'set theChoice to choose from list myList with title theTitle with prompt thePrompt'
-
-        script += f'''
+            {default_choice_script}
+            set theChoice to choose from list myList with title theTitle with prompt thePrompt & default_items_script
             -- 检查用户是否点击了取消按钮
             if theChoice is false then
                 error number -128 -- 引发标准取消错误
@@ -214,7 +254,21 @@ class Display():
             -- 或者你可以不处理，让 osascript 返回非零退出码
             -- error number -128
         end try
-        '''
+        """
+
+        default_choice_script = ""
+        default_items_script = ""
+        if default_option and default_option in options:
+            default_choice_script = f'set defaultChoice to {{"{default_option}"}}'
+            default_items_script = f'default items defaultChoice'
+
+        script = textwrap.dedent(script_template).format(
+            applescript_list=applescript_list,
+            prompt_text=prompt_text,
+            list_title=list_title,
+            default_choice_script=default_choice_script,
+            default_items_script=default_items_script
+        )
 
         try:
             # 不需要 shlex.quote
@@ -251,15 +305,19 @@ class Display():
             return None
 
     @staticmethod
-    def get_multi_level_selection_simple(warehouse_list: list, action_list: list) -> str:
+    def get_multi_level_selection_simple(self,
+                                         warehouse_list: list[str],
+                                         action_list: list[str]) -> str:
         """
-        【极简版】通过调用AppleScript在macOS上显示多层级UI对话框来收集用户输入。
-        
-        此版本移除了所有错误处理。如果用户点击"取消"，脚本会失败。
+        通过调用 AppleScript 在 macOS 上显示多层级 UI 对话框来收集用户输入。
+        此版本为极简版，移除了所有错误处理。如果用户点击"取消"，脚本会失败。
 
-        :param warehouse_list: 字符串列表，用于仓库选择。
-        :param action_list: 字符串列表，用于动作类型选择。
-        :return: 格式为 "动作:仓库:标题:描述" 的字符串。
+        Args:
+            warehouse_list (list[str]): 字符串列表，用于仓库选择。
+            action_list (list[str]): 字符串列表，用于动作类型选择。
+
+        Returns:
+            str: 格式为 "动作:仓库:标题:描述" 的字符串。
         """
         # 1. 将Python列表格式化为AppleScript能识别的列表字符串
         # 例如: ['server', 'client'] -> '{"server", "client"}'
@@ -297,10 +355,25 @@ class Display():
 
 
     @staticmethod
-    def display_dialog(title, text, buttons='"OK"',button_cancel = True):
-        # # --- 示例 ---
-        # buttons='"OK","vvk"'
-        """使用 AppleScript 显示一个简单的对话框"""
+    def display_dialog(self,
+                       title: str,
+                       text: str,
+                       buttons: str = '"OK"',
+                       button_cancel: bool = True) -> str | None:
+        """
+        使用 AppleScript 在 macOS 上显示一个简单的对话框。
+
+        Args:
+            title (str): 对话框的标题。
+            text (str): 对话框中显示的主要文本内容。
+            buttons (str, optional): 对话框按钮的 AppleScript 格式字符串，例如 '"OK","Cancel"'。
+                                     默认为 '"OK"'。
+            button_cancel (bool, optional): 是否包含取消按钮。如果为 True，则在提供的按钮前添加 "cancel"。
+                                            默认为 True。
+
+        Returns:
+            str | None: 用户点击的按钮文本。如果发生错误，则返回 None。
+        """
         if button_cancel:
             script = f'''
             display dialog "{text}" with title "{title}" buttons {{"cancel",{buttons}}} \
@@ -327,15 +400,16 @@ class Display():
 class ShortCut():
 
     @staticmethod
-    def run_shortcut(shortcut_name:str,params:str=None):
-        """运行快捷指令
+    def run_shortcut(self, shortcut_name: str, params: str = None) -> str:
+        """
+        运行 macOS 快捷指令。
 
         Args:
-            shortcut_name (str, optional): 快捷指令名称. Defaults to ''.
-            params (str, optional): 参数. Defaults to None.
+            shortcut_name (str): 要运行的快捷指令的名称。
+            params (str, optional): 传递给快捷指令的输入参数。默认为 None。
 
         Returns:
-            str: 快捷指令的输出
+            str: 快捷指令执行后的输出结果。
         """
         commend = f'run shortcut "{shortcut_name}"' if params is None else f'run shortcut "{shortcut_name}" with input "{params}"'
         script = f'''tell application "Shortcuts"
@@ -343,18 +417,17 @@ class ShortCut():
         end tell'''
         return run_applescript(script)
 
+    @staticmethod
+    def applescript() -> str:
+        """
+        执行一个包含 AppleScript 示例代码的脚本。
 
-#######
+        此方法主要用于演示 AppleScript 的执行，不返回任何值。
 
-
-def applescript():
-	"""
-	
-	https://sspai.com/post/46912
-
-	https://sspai.com/post/43758
-	"""
-	return """
+        Returns:
+            str: AppleScript 执行结果。
+        """
+        script_content = """
 
 ```applescript
 **use** AppleScript version "2.4" -- Yosemite (10.10) or later
@@ -367,29 +440,29 @@ def applescript():
 
 **tell** _application_ "System Events"
 
-	**tell** _process_ "网易有道翻译"
-		
-		-- set frontmost to true
-		
-			**tell** _window_ "网易有道翻译"
-			
-				**tell** _scroll area_ 1 **of** _group_ 1 **of** _group_ 1 -- 滚动区 组 组
-					
-					**tell** _UI element_ 1 -- 组 HTML 内容
-						
-						entire contents -- 获取所有 UI 元素
-						
-						-- static text "hierarchy"
-					
-					**set** value **of** _group_ 7 **to** "aaa"
-				
-				**end** **tell**
-			
-			**end** **tell**
-		
-		**end** **tell**
-	
-	**end** **tell**
+ **tell** _process_ "网易有道翻译"
+  
+  -- set frontmost to true
+  
+   **tell** _window_ "网易有道翻译"
+   
+    **tell** _scroll area_ 1 **of** _group_ 1 **of** _group_ 1 -- 滚动区 组 组
+     
+     **tell** _UI element_ 1 -- 组 HTML 内容
+      
+      entire contents -- 获取所有 UI 元素
+      
+      -- static text "hierarchy"
+     
+     **set** value **of** _group_ 7 **to** "aaa"
+    
+    **end** **tell**
+   
+   **end** **tell**
+  
+  **end** **tell**
+ 
+ **end** **tell**
 
 **end** **tell**
 
@@ -401,11 +474,11 @@ def applescript():
 
 tell application "System Events"
 
-	tell process "网易有道翻译"
-	
-		entire contents -- 获取所有UI
-	
-	end tell
+ tell process "网易有道翻译"
+ 
+  entire contents -- 获取所有UI
+ 
+ end tell
 
 end tell
 
@@ -413,3 +486,4 @@ end tell
 ```
 
 """
+        return run_applescript(script_content)

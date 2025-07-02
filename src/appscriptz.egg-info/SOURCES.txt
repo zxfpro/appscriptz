@@ -8,4 +8,4 @@ src/appscriptz.egg-info/SOURCES.txt
 src/appscriptz.egg-info/dependency_links.txt
 src/appscriptz.egg-info/requires.txt
 src/appscriptz.egg-info/top_level.txt
-tests/test_1.py
+tests/test_core.py
