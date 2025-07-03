@@ -1,5 +1,4 @@
-llama-index>=0.12.36
 llmada==1.0.3
-promptlibz==0.2.10
+promptlibz==1.0.2
 pytest>=8.3.5
 toml==0.10.2

@@ -148,10 +148,9 @@ wheels = [
 
 [[package]]
 name = "appscriptz"
-version = "1.0.3"
+version = "1.0.4"
 source = { virtual = "." }
 dependencies = [
-    { name = "llama-index" },
     { name = "llmada" },
     { name = "promptlibz" },
     { name = "pytest" },
@@ -160,9 +159,8 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "llama-index", specifier = ">=0.12.36" },
     { name = "llmada", specifier = "==1.0.3" },
-    { name = "promptlibz", specifier = "==0.2.10" },
+    { name = "promptlibz", specifier = "==1.0.2" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "toml", specifier = "==0.10.2" },
 ]
@@ -921,7 +919,7 @@ wheels = [
 
 [[package]]
 name = "llama-index"
-version = "0.12.36"
+version = "0.12.30"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "llama-index-agent-openai" },
@@ -937,9 +935,9 @@ dependencies = [
     { name = "llama-index-readers-llama-parse" },
     { name = "nltk" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/26/05/5fd6f4575ed797d3ece277a7fe8ef04a52c3f7e08d5b62ca46b7776f08d4/llama_index-0.12.36.tar.gz", hash = "sha256:3f0c4f0d1478c9f136760ef2bce65f03fa21a0a7402b537bcccbedf0ab7387bf", size = 8016 }
+sdist = { url = "https://files.pythonhosted.org/packages/53/73/42c16815af59986623ae0b29f58b9164ad2b1abdf0d0a122ce402d077679/llama_index-0.12.30.tar.gz", hash = "sha256:94f33f651de96fe450e15425fea222c50e575ecd5a31359cd6e3d6a236b79095", size = 7887 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/c2/cc9092dfc7dc70089a0da1753d97193f2e6daff11105322b514a2bf43550/llama_index-0.12.36-py3-none-any.whl", hash = "sha256:08bfa41c274672fe5aa4bafa6a6cbda4344141c4aa42517d842a5daf94ffcfe5", size = 7049 },
+    { url = "https://files.pythonhosted.org/packages/79/65/ea61cd261b5b2b2af9130cf9d4a132e8f795ff48eb1eccf4ea21a09dd393/llama_index-0.12.30-py3-none-any.whl", hash = "sha256:844cb8f65458131501a56d0359a51e41fc8e9b52151cf7dca9dd5b0171e52715", size = 6983 },
 ]
 
 [[package]]
@@ -1591,21 +1589,17 @@ wheels = [
 
 [[package]]
 name = "promptlibz"
-version = "0.2.10"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dill" },
     { name = "llama-index" },
-    { name = "llmada" },
-    { name = "pandas" },
-    { name = "pytest" },
-    { name = "pytest-html" },
     { name = "pyyaml" },
     { name = "toml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/06/45/457d07de4985edb28f8302f7f6f22cdf083e2b8729530529b76b7a015eb1/promptlibz-0.2.10.tar.gz", hash = "sha256:4149e7b01a5af870b4e545c7367814c2e31fa5b44775a37dfd80333ec37d302a", size = 6257 }
+sdist = { url = "https://files.pythonhosted.org/packages/c0/7e/4763ecf7892e2fc0b88e13011d376d659e2ae38a842c64dd4c2283c11667/promptlibz-1.0.2.tar.gz", hash = "sha256:53c26c71a117ac84f957f649f11ad156670d47de93f9a6f9d65dfa0cee83757e", size = 6257 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/6f/3107b8d107b2b4d0dc3fe3cf3404ab08f1a92ae57aa5c5ab6cac96a8b076/promptlibz-0.2.10-py3-none-any.whl", hash = "sha256:8453ba0c036f4ae9cee8eb42c54ea0b08528d0b78c5c44984d3fc340742bb5d9", size = 6381 },
+    { url = "https://files.pythonhosted.org/packages/6b/c9/1f2ceef7bf7a78734a75179fa7ed56ef93f862eb5040a91d47217bb07f36/promptlibz-1.0.2-py3-none-any.whl", hash = "sha256:eb5ec2d11f507d598549eed7b31b9a402e5921fec34584b1585a7394fe721a7b", size = 6468 },
 ]
 
 [[package]]
@@ -1856,32 +1850,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ae/3c/c9d525a414d506893f0cd8a8d0de7706446213181570cdbd766691164e40/pytest-8.3.5.tar.gz", hash = "sha256:f4efe70cc14e511565ac476b57c279e12a855b11f48f212af1080ef2263d3845", size = 1450891 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/30/3d/64ad57c803f1fa1e963a7946b6e0fea4a70df53c1a7fed304586539c2bac/pytest-8.3.5-py3-none-any.whl", hash = "sha256:c69214aa47deac29fad6c2a4f590b9c4a9fdb16a403176fe154b79c0b4d4d820", size = 343634 },
-]
-
-[[package]]
-name = "pytest-html"
-version = "4.1.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "jinja2" },
-    { name = "pytest" },
-    { name = "pytest-metadata" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/bb/ab/4862dcb5a8a514bd87747e06b8d55483c0c9e987e1b66972336946e49b49/pytest_html-4.1.1.tar.gz", hash = "sha256:70a01e8ae5800f4a074b56a4cb1025c8f4f9b038bba5fe31e3c98eb996686f07", size = 150773 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c8/c7/c160021cbecd956cc1a6f79e5fe155f7868b2e5b848f1320dad0b3e3122f/pytest_html-4.1.1-py3-none-any.whl", hash = "sha256:c8152cea03bd4e9bee6d525573b67bbc6622967b72b9628dda0ea3e2a0b5dd71", size = 23491 },
-]
-
-[[package]]
-name = "pytest-metadata"
-version = "3.1.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pytest" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a6/85/8c969f8bec4e559f8f2b958a15229a35495f5b4ce499f6b865eac54b878d/pytest_metadata-3.1.1.tar.gz", hash = "sha256:d2a29b0355fbc03f168aa96d41ff88b1a3b44a3b02acbe491801c98a048017c8", size = 9952 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/43/7e7b2ec865caa92f67b8f0e9231a798d102724ca4c0e1f414316be1c1ef2/pytest_metadata-3.1.1-py3-none-any.whl", hash = "sha256:c8e0844db684ee1c798cfa38908d20d67d0463ecb6137c72e91f418558dd5f4b", size = 11428 },
 ]
 
 [[package]]
