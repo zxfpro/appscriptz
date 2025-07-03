@@ -1,3 +1,4 @@
+llama-index==0.12.30
 llmada==1.0.3
 promptlibz==1.0.2
 pytest>=8.3.5

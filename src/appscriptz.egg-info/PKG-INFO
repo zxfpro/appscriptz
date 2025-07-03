@@ -1,9 +1,10 @@
 Metadata-Version: 2.4
 Name: appscriptz
-Version: 1.0.5
+Version: 1.0.6
 Summary: Add your description here
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+Requires-Dist: llama-index==0.12.30
 Requires-Dist: llmada==1.0.3
 Requires-Dist: promptlibz==1.0.2
 Requires-Dist: pytest>=8.3.5

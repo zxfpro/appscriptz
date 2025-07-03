@@ -148,9 +148,10 @@ wheels = [
 
 [[package]]
 name = "appscriptz"
-version = "1.0.4"
+version = "1.0.5"
 source = { virtual = "." }
 dependencies = [
+    { name = "llama-index" },
     { name = "llmada" },
     { name = "promptlibz" },
     { name = "pytest" },
@@ -159,6 +160,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "llama-index", specifier = "==0.12.30" },
     { name = "llmada", specifier = "==1.0.3" },
     { name = "promptlibz", specifier = "==1.0.2" },
     { name = "pytest", specifier = ">=8.3.5" },
