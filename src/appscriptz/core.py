@@ -4,7 +4,7 @@ import subprocess
 from llama_index.core import PromptTemplate
 import shlex
 from promptlibz.core import PromptManager,PromptRepository
-from llmada import BianXieAdapter
+from llmada.core import BianXieAdapter
 import textwrap # Add this line
 
 def generate_schedule(text: str, habit: str = "") -> str:

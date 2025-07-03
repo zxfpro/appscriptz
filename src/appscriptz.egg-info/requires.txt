@@ -1,5 +1,5 @@
 llama-index>=0.12.36
-llmada>=0.1.11
+llmada==1.0.3
 promptlibz==0.2.10
 pytest>=8.3.5
-toml>=0.10.2
+toml==0.10.2
