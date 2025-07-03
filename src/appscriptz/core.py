@@ -76,7 +76,7 @@ class Notes():
 class Reminder():
 
     @staticmethod
-    def write_reminder(self,
+    def write_reminder(
                        content: str,
                        list_name: str = "Reminders",
                        due_date: str = None,
@@ -122,7 +122,7 @@ class Reminder():
 
 class Calulate():
     @staticmethod
-    def update(self,
+    def update(
                start_date: str = "2025年4月25日8:00",
                end_date: str = "2025年4月25日9:00",
                event_name: str = "会议") -> str:
@@ -159,7 +159,7 @@ class Calulate():
         return run_applescript(script)
 
     @staticmethod
-    def delete(self, event_name: str) -> str:
+    def delete(event_name: str) -> str:
         """
         从 macOS 日历应用中删除指定名称的事件。
 
@@ -205,7 +205,7 @@ class Calulate():
 
 class Display():
     @staticmethod
-    def multiple_selection_boxes(self,
+    def multiple_selection_boxes(
                                  prompt_text: str = "请从下面的列表中选择一项：",
                                  list_title: str = "请选择",
                                  options: list[str] = None,
@@ -305,7 +305,7 @@ class Display():
             return None
 
     @staticmethod
-    def get_multi_level_selection_simple(self,
+    def get_multi_level_selection_simple(
                                          warehouse_list: list[str],
                                          action_list: list[str]) -> str:
         """
@@ -355,7 +355,7 @@ class Display():
 
 
     @staticmethod
-    def display_dialog(self,
+    def display_dialog(
                        title: str,
                        text: str,
                        buttons: str = '"OK"',
@@ -400,7 +400,7 @@ class Display():
 class ShortCut():
 
     @staticmethod
-    def run_shortcut(self, shortcut_name: str, params: str = None) -> str:
+    def run_shortcut(shortcut_name: str, params: str = None) -> str:
         """
         运行 macOS 快捷指令。
 
